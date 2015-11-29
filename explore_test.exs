@@ -7,7 +7,7 @@ defmodule ExploreTests do
     IO.puts "Starting Explore Tests"
     range = 1..5
     root = "ExploreTest"
-    files = for value <- range, do: root <> "/test#{value}.txt"
+    files = for value <- range, do: Path.join(root, "/test#{value}.txt")
     contents = for value <- range, do: "content #{value}"
     file_contents = Enum.zip(files,contents)
 
@@ -20,18 +20,6 @@ defmodule ExploreTests do
     File.mkdir(root)
     Enum.each(file_contents, &(File.write(elem(&1, 0), elem(&1, 1))))
   end
-
-  # on_exit do
-  #
-  # end
-
-  test "list all files", %{root: root, count: count} do
-    assert Explore.ls(root) |> elem(1) |> Enum.count == count
-  end
-
-  # test "append file and directory", ${root: root, files: files} do
-  #
-  # end
 
   test "get single file contents", %{files: files} do
     first_file = List.first(files)
